@@ -1,155 +1,347 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#f6f2e9">
-<title>Kiosk — Einzelne Stripe-Zahlungslinks</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-:root{--paper:#f6f2e9;--ink:#24352c;--muted:#687269;--line:#d8d9cd;--green:#244c37;--lime:#e1ef9b;--orange:#e77345;--white:#fffdf6;--display:"Space Grotesk",sans-serif;--body:"DM Sans",sans-serif}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body)}button,input{font:inherit}button{cursor:pointer}a{color:inherit}button,a,input{touch-action:manipulation}:focus-visible{outline:3px solid var(--orange);outline-offset:4px}
-.wrap{max-width:1160px;margin:auto;padding:0 24px}header{display:flex;align-items:center;justify-content:space-between;height:94px;border-bottom:1px solid var(--line)}.logo{font:700 29px var(--display);letter-spacing:-1.5px;text-decoration:none}.logo span{color:var(--orange)}.header-note{font-size:11px;letter-spacing:1.5px;text-transform:uppercase}
-.hero{padding:62px 0 46px;display:grid;grid-template-columns:1.4fr 1fr;gap:40px;align-items:end}.eyebrow{font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:700;margin:0 0 18px}h1{font:500 clamp(44px,6vw,74px)/1.04 var(--display);letter-spacing:-3.5px;margin:0}h1 span{color:var(--green)}.intro{margin:0;max-width:350px;font-size:15px;line-height:1.8;color:var(--muted)}.intro strong{color:var(--ink);font-weight:500}
-.section-heading{display:flex;justify-content:space-between;align-items:center;padding:20px 0;border-top:1px solid var(--line)}h2{font:500 21px var(--display);letter-spacing:-.5px;margin:0}.small{font-size:12px;color:var(--muted)}
-.products{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}.product{border:1px solid var(--line);background:var(--white);overflow:hidden}.visual{height:222px;display:grid;place-items:center;position:relative;overflow:hidden;background:#e9eddb}.visual:before{content:"";position:absolute;width:180px;height:180px;border:1px solid #244c3720;border-radius:50%}.visual svg{height:166px;width:166px;position:relative;transition:transform .4s}.product:hover .visual svg{transform:rotate(-5deg) translateY(-5px)}.visual.orange{background:#f3dfca}.visual.yellow{background:#eee9c6}.index{position:absolute;top:16px;left:18px;font:12px var(--display);color:#24352c80}.type{position:absolute;right:16px;bottom:15px;font-size:10px;letter-spacing:1px;text-transform:uppercase}.info{padding:23px}.title-row{display:flex;justify-content:space-between;gap:12px;align-items:center}h3{font:500 22px var(--display);margin:0;letter-spacing:-.7px}.price{font:500 18px var(--display);white-space:nowrap}.description{font-size:12px;color:var(--muted);margin:9px 0 23px}.buy{border:0;background:var(--green);color:var(--white);width:100%;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;font-size:13px;font-weight:600;transition:background .2s,transform .2s}.buy:hover{background:#36694b}.buy:active{transform:scale(.98)}.link-state{margin:11px 0 0;font-size:10px;color:var(--muted);display:flex;align-items:center;gap:6px}.link-state:before{content:"";width:5px;height:5px;border-radius:50%;background:#a1a697}.link-state.ready:before{background:var(--green)}
-.note{display:flex;gap:15px;align-items:start;margin:25px 0 45px;font-size:12px;line-height:1.7;color:var(--muted)}.note svg{flex-shrink:0;width:18px;height:18px}
-.setup{border-top:1px solid var(--line);padding:30px 0 45px;display:grid;grid-template-columns:1fr 1.6fr;gap:65px}.setup p{font-size:13px;line-height:1.8;color:var(--muted);max-width:290px;margin:14px 0}.steps{list-style:none;margin:0;padding:0;counter-reset:step}.steps li{counter-increment:step;display:grid;grid-template-columns:30px 1fr;gap:13px;padding:0 0 22px;font-size:13px;line-height:1.7}.steps li:before{content:"0" counter(step);font:12px var(--display);color:var(--green);padding-top:3px}.steps strong{font-weight:600}.steps span{color:var(--muted)}
-footer{border-top:1px solid var(--line);padding:23px 0;display:flex;justify-content:space-between;font-size:11px;color:var(--muted)}
-dialog{width:min(540px,calc(100% - 32px));padding:30px;border:1px solid var(--line);background:var(--white);color:var(--ink);max-height:90vh;overflow:auto}dialog::backdrop{background:#17271ed0;backdrop-filter:blur(5px)}.dialog-top{display:flex;justify-content:space-between;gap:20px;align-items:center}.close{border:0;background:var(--paper);width:32px;height:32px;font-size:23px;color:var(--ink)}dialog p{font-size:13px;line-height:1.8;color:var(--muted)}label{display:block;font-size:12px;font-weight:600;margin:22px 0 8px}input{width:100%;border:1px solid var(--line);padding:13px;background:var(--paper);color:var(--ink);font-size:13px}.actions{display:flex;gap:10px;margin-top:20px}.actions button{border:0;padding:12px 16px;font-size:12px;font-weight:600}.save{background:var(--green);color:white}.clear{background:var(--paper);color:var(--ink)}.error{color:#9d3424;font-size:12px;line-height:1.6;margin-top:12px}.configure{background:transparent;border:0;padding:0;color:var(--green);text-decoration:underline;text-underline-offset:3px;font-size:12px}.reveal{animation:rise .65s both}.products{animation-delay:.15s}@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}code{background:#e9eddb;padding:2px 4px;font-size:11px;overflow-wrap:anywhere}
-@media(max-width:760px){header{height:76px}.header-note{font-size:9px;letter-spacing:.7px}.hero{grid-template-columns:1fr;padding:40px 0 32px;gap:23px}h1{letter-spacing:-2px}.intro{max-width:440px}.products{grid-template-columns:1fr}.product{display:grid;grid-template-columns:120px 1fr}.visual{height:100%;min-height:208px}.visual svg{width:125px;height:140px}.visual:before{width:140px;height:140px}.type{display:none}.info{padding:20px 17px}h3{font-size:20px}.price{font-size:16px}.description{margin-bottom:18px}.setup{grid-template-columns:1fr;gap:16px}.setup p{max-width:none}.section-heading{align-items:start;gap:15px}.section-heading .small{max-width:135px;text-align:right;line-height:1.5}footer{gap:20px;line-height:1.6}.note{margin-bottom:30px}}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f0e5">
+  <title>Online-Kiosk — Einfach auswählen. Direkt bezahlen.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #f5f0e5;
+      --white: #fffdf7;
+      --ink: #25392d;
+      --green: #28553b;
+      --muted: #626e62;
+      --line: #d7d9ca;
+      --orange: #da6438;
+      --lime: #deeca1;
+      --display: "Space Grotesk", sans-serif;
+      --body: "DM Sans", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--body); }
+    a { color: inherit; }
+    button { font: inherit; cursor: pointer; }
+    :focus-visible { outline: 3px solid var(--orange); outline-offset: 5px; }
+    .wrap { max-width: 1160px; margin: auto; padding: 0 24px; }
+
+    header {
+      min-height: 90px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      border-bottom: 1px solid var(--line);
+    }
+    .logo { font: 700 30px var(--display); letter-spacing: -1.6px; text-decoration: none; }
+    .logo span { color: var(--orange); }
+    .header-note { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      align-items: end;
+      gap: 48px;
+      padding: 64px 0 48px;
+    }
+    .eyebrow { margin: 0 0 18px; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
+    h1 { margin: 0; font: 500 clamp(44px, 6vw, 74px)/1.04 var(--display); letter-spacing: -3px; }
+    h1 span { color: var(--green); }
+    .intro { margin: 0; max-width: 340px; color: var(--muted); font-size: 15px; line-height: 1.8; }
+    .section-heading { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 20px 0; border-top: 1px solid var(--line); }
+    h2 { margin: 0; font: 500 22px var(--display); letter-spacing: -.6px; }
+    .small { font-size: 11px; color: var(--muted); }
+
+    .products { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .product { background: var(--white); border: 1px solid var(--line); overflow: hidden; }
+    .visual { height: 228px; display: grid; place-items: center; position: relative; overflow: hidden; background: #e5ead7; }
+    .visual.orange { background: #f0dcc7; }
+    .visual.yellow { background: #ebe5bf; }
+    .visual::before { content: ""; position: absolute; width: 175px; height: 175px; border: 1px solid #28553b24; border-radius: 50%; }
+    .visual svg { width: 172px; height: 172px; position: relative; transition: transform .35s; }
+    .product:hover .visual svg { transform: rotate(-5deg) translateY(-5px); }
+    .number { position: absolute; left: 18px; top: 17px; font: 12px var(--display); color: #25392d80; }
+    .category { position: absolute; right: 16px; bottom: 16px; font-size: 10px; letter-spacing: 1.3px; text-transform: uppercase; }
+    .info { padding: 23px; }
+    .title-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    h3 { margin: 0; font: 500 23px var(--display); letter-spacing: -.8px; }
+    .price { font: 500 19px var(--display); white-space: nowrap; }
+    .description { margin: 9px 0 23px; color: var(--muted); font-size: 12px; line-height: 1.6; }
+    .buy {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 17px;
+      border: 0;
+      background: var(--green);
+      color: var(--white);
+      font-size: 13px;
+      font-weight: 600;
+      transition: background .2s, transform .2s;
+    }
+    .buy:hover { background: #37734e; transform: translateY(-2px); }
+    .buy:active { transform: scale(.98); }
+    .payment-note { margin: 12px 0 0; color: var(--muted); font-size: 10px; }
+
+    .notice {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin: 25px 0 43px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.8;
+    }
+    .notice svg { width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
+    .setup { display: grid; grid-template-columns: 1fr 1.6fr; gap: 65px; padding: 30px 0 42px; border-top: 1px solid var(--line); }
+    .setup p { max-width: 300px; font-size: 13px; line-height: 1.8; color: var(--muted); }
+    .steps { list-style: none; margin: 0; padding: 0; counter-reset: step; }
+    .steps li { counter-increment: step; display: grid; grid-template-columns: 28px 1fr; gap: 14px; padding-bottom: 21px; font-size: 13px; line-height: 1.8; }
+    .steps li::before { content: "0" counter(step); padding-top: 3px; font: 12px var(--display); }
+    .steps span { color: var(--muted); }
+    code { padding: 2px 4px; background: #e5ead7; font-size: 11px; overflow-wrap: anywhere; }
+    footer { display: flex; justify-content: space-between; gap: 20px; border-top: 1px solid var(--line); padding: 23px 0; color: var(--muted); font-size: 11px; line-height: 1.6; }
+
+    dialog { width: min(460px, calc(100% - 32px)); border: 1px solid var(--line); padding: 28px; background: var(--white); color: var(--ink); }
+    dialog::backdrop { background: #17271dcc; backdrop-filter: blur(4px); }
+    dialog p { font-size: 14px; color: var(--muted); line-height: 1.8; }
+    .close { background: var(--green); color: white; border: 0; padding: 12px 18px; font-size: 13px; }
+    .close:hover { background: #37734e; }
+    .reveal { animation: rise .65s both; }
+    .products.reveal { animation-delay: .15s; }
+    @keyframes rise { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 760px) {
+      header { min-height: 76px; }
+      .header-note { font-size: 9px; letter-spacing: .6px; text-align: right; }
+      .hero { grid-template-columns: 1fr; padding: 40px 0 33px; gap: 22px; }
+      h1 { letter-spacing: -2px; }
+      .intro { max-width: 450px; }
+      .products { grid-template-columns: 1fr; }
+      .product { display: grid; grid-template-columns: 120px 1fr; }
+      .visual { height: 100%; min-height: 210px; }
+      .visual svg { width: 125px; height: 145px; }
+      .visual::before { width: 145px; height: 145px; }
+      .category { display: none; }
+      .info { padding: 20px 16px; }
+      h3 { font-size: 20px; }
+      .price { font-size: 16px; }
+      .description { margin-bottom: 18px; }
+      .section-heading { align-items: flex-start; }
+      .small { max-width: 125px; text-align: right; line-height: 1.6; }
+      .setup { grid-template-columns: 1fr; gap: 15px; }
+      .setup p { max-width: none; }
+    }
+    @media (max-width: 370px) {
+      .wrap { padding: 0 16px; }
+      .product { grid-template-columns: 95px 1fr; }
+      .visual svg { width: 105px; }
+      .title-row { flex-wrap: wrap; gap: 5px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before { animation: none !important; transition: none !important; }
+    }
+  </style>
 </head>
 <body>
-<div class="wrap">
-<header><a href="./" class="logo" aria-label="Kiosk Startseite">kiosk<span>✳</span></a><span class="header-note">Kleine Auswahl. Einfach bezahlen.</span></header>
-<main>
-<section class="hero reveal">
-<div><p class="eyebrow">Dein Online-Kiosk / Zahlungslink-Vorlage</p><h1>Ein Produkt.<br><span>Ein Zahlungslink.</span></h1></div>
-<p class="intro">Ohne Warenkorb. Ohne komplizierte Integration. Wähle ein Produkt und bezahle direkt bei <strong>Stripe Checkout</strong>.</p>
-</section>
-<div class="section-heading"><h2>Die kleine Auswahl</h2><span class="small">Beispielprodukte & Preise · EUR</span></div>
-<section class="products reveal" aria-label="Produkte">
-<article class="product">
-<div class="visual"><span class="index">01 /</span><svg viewBox="0 0 180 180" role="img" aria-label="Illustration einer Coladose"><ellipse cx="90" cy="160" rx="33" ry="6" fill="#24352c15"/><rect x="61" y="26" width="58" height="128" rx="13" fill="#244c37"/><path d="M63 38h54M63 144h54" stroke="#f6f2e9" stroke-width="3"/><ellipse cx="90" cy="29" rx="25" ry="5" fill="#c4cec0"/><ellipse cx="90" cy="29" rx="8" ry="2" fill="#65766b"/><text x="90" y="93" text-anchor="middle" fill="#e1ef9b" font-size="24" font-family="Space Grotesk, sans-serif" font-weight="700" transform="rotate(-90 90 93)">COLA</text><path d="M107 57v63" stroke="#fff" stroke-opacity=".12" stroke-width="3"/></svg><span class="type">Erfrischung</span></div>
-<div class="info"><div class="title-row"><h3>Cola</h3><span class="price">2,00 €</span></div><p class="description">Eine kleine Erfrischung · 330 ml</p><button class="buy" data-buy="cola"><span>Jetzt bezahlen</span><span aria-hidden="true">↗</span></button><p class="link-state" id="state-cola">Zahlungslink noch nicht hinterlegt</p></div>
-</article>
-<article class="product">
-<div class="visual orange"><span class="index">02 /</span><svg viewBox="0 0 180 180" role="img" aria-label="Illustration einer Chipstüte"><ellipse cx="90" cy="159" rx="42" ry="6" fill="#24352c15"/><path d="M52 29h76l-5 15 7 99-4 10H54l-4-10 7-99z" fill="#e77345"/><path d="M53 35h74M53 145h74" stroke="#f6f2e9" stroke-width="3" stroke-dasharray="3 2"/><path d="M62 49l-5 86m64-86 3 84" stroke="#ba502b" stroke-opacity=".35" stroke-width="2"/><text x="90" y="81" text-anchor="middle" fill="#fff5df" font-size="19" font-family="Space Grotesk, sans-serif" font-weight="700">CHIPS</text><ellipse cx="82" cy="109" rx="15" ry="10" transform="rotate(-25 82 109)" fill="#f4d37f"/><ellipse cx="102" cy="116" rx="15" ry="10" transform="rotate(25 102 116)" fill="#ffe9a9"/></svg><span class="type">Knusprige Pause</span></div>
-<div class="info"><div class="title-row"><h3>Chips</h3><span class="price">1,50 €</span></div><p class="description">Knusprig & gesalzen · 50 g</p><button class="buy" data-buy="chips"><span>Jetzt bezahlen</span><span aria-hidden="true">↗</span></button><p class="link-state" id="state-chips">Zahlungslink noch nicht hinterlegt</p></div>
-</article>
-<article class="product">
-<div class="visual yellow"><span class="index">03 /</span><svg viewBox="0 0 180 180" role="img" aria-label="Illustration eines Sandwiches"><ellipse cx="90" cy="151" rx="54" ry="7" fill="#24352c15"/><path d="M36 135 84 44q5-9 11 0l48 91z" fill="#ba8446" stroke="#916036" stroke-width="3" stroke-linejoin="round"/><path d="M34 127 85 38q5-8 10 0l49 89z" fill="#547340"/><path d="m36 118 49-82q5-8 10 0l48 82z" fill="#e77345"/><path d="M37 108 84 27q6-9 12 0l47 81z" fill="#e8bd79" stroke="#bd8b4f" stroke-width="3" stroke-linejoin="round"/><path d="m51 99 36-62q3-5 6 0l36 62z" fill="#fae5b6"/><g fill="#d8b97e"><circle cx="88" cy="58" r="2"/><circle cx="77" cy="78" r="2"/><circle cx="103" cy="85" r="2"/><circle cx="90" cy="93" r="2"/></g></svg><span class="type">Für zwischendurch</span></div>
-<div class="info"><div class="title-row"><h3>Sandwich</h3><span class="price">4,50 €</span></div><p class="description">Eine herzhafte Pause · 1 Stück</p><button class="buy" data-buy="sandwich"><span>Jetzt bezahlen</span><span aria-hidden="true">↗</span></button><p class="link-state" id="state-sandwich">Zahlungslink noch nicht hinterlegt</p></div>
-</article>
-</section>
-<div class="note"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M8 10V7a4 4 0 018 0v3" stroke="currentColor" stroke-width="1.5"/></svg><span>Einmalige Zahlungen über Stripe. Diese Vorlage erstellt selbst keine Zahlungslinks und löst ohne hinterlegten Link keine Zahlung aus. Angebot, Preis und Lieferbedingungen müssen mit Stripe übereinstimmen.</span></div>
-<section class="setup" aria-labelledby="setup-title">
-<div><p class="eyebrow">Für dich als Betreiber</p><h2 id="setup-title">In drei Schritten bereit.</h2><p>Für einzelne Payment Links brauchst du keinen eigenen Zahlungsserver und keinen Stripe-Geheimschlüssel im JavaScript.</p><button class="configure" id="configure">Zahlungslinks lokal testen ↗</button></div>
-<ol class="steps">
-<li><div><strong>Produkt in Stripe anlegen</strong><br><span>Erstelle im Stripe-Dashboard ein Produkt mit einem einmaligen Preis und der passenden Währung.</span></div></li>
-<li><div><strong>Payment Link erstellen</strong><br><span>Erstelle unter „Payment Links“ einen Link für dieses Produkt. Konfiguriere bei Bedarf Lieferadresse und Versandkosten. Teste zuerst in der Stripe-Testumgebung.</span></div></li>
-<li><div><strong>Link im Code eintragen</strong><br><span>Kopiere die URL in <code>PAYMENT_LINKS</code> am Ende dieser Datei. Wiederhole das für jedes Produkt und passe die Beispielpreise an. Die Zahlungssumme wird in Stripe festgelegt.</span></div></li>
-</ol>
-</section>
-</main>
-<footer><span>kiosk✳ — Dein kleiner Online-Laden.</span><span>Keine Abos. Kein Warenkorb.</span></footer>
-</div>
-<dialog id="link-dialog" aria-labelledby="dialog-title">
-<div class="dialog-top"><h2 id="dialog-title">Zahlungslinks testen</h2><button class="close" id="close-dialog" aria-label="Dialog schließen">×</button></div>
-<p>Füge bereits erstellte Stripe Payment Links ein. Diese Eingaben gelten nur für diese geöffnete Seite. Für deine veröffentlichte Website trägst du die Links direkt im JavaScript ein.</p>
-<form id="link-form">
-<label for="link-cola">Cola · Stripe Payment Link</label><input type="url" id="link-cola" placeholder="https://buy.stripe.com/…" autocomplete="off">
-<label for="link-chips">Chips · Stripe Payment Link</label><input type="url" id="link-chips" placeholder="https://buy.stripe.com/…" autocomplete="off">
-<label for="link-sandwich">Sandwich · Stripe Payment Link</label><input type="url" id="link-sandwich" placeholder="https://buy.stripe.com/…" autocomplete="off">
-<p class="error" id="error" role="alert" hidden></p>
-<div class="actions"><button class="save" type="submit">Links übernehmen</button><button class="clear" type="button" id="reset-links">Eingaben leeren</button></div>
-</form>
-</dialog>
-<script>
-// Erstelle jeden Link im Stripe-Dashboard und füge ihn hier ein.
-// Keine geheimen Stripe-Schlüssel (sk_test_... / sk_live_...) eintragen.
-// Passe Produkte und Preise im HTML an deine Stripe-Angebote an.
-const PAYMENT_LINKS = {
-  cola: "",
-  chips: "",
-  sandwich: ""
-};
+  <div class="wrap">
+    <header>
+      <a href="./" class="logo" aria-label="Kiosk Startseite">kiosk<span>✳</span></a>
+      <span class="header-note">Kleine Auswahl. Direkt bezahlen.</span>
+    </header>
 
-const names = {cola: "Cola", chips: "Chips", sandwich: "Sandwich"};
-const dialog = document.getElementById("link-dialog");
-const error = document.getElementById("error");
+    <main>
+      <section class="hero reveal">
+        <div>
+          <p class="eyebrow">Dein Online-Kiosk</p>
+          <h1>Eine kleine Pause.<br><span>Einfach bestellt.</span></h1>
+        </div>
+        <p class="intro">Wähle dein Produkt und bezahle direkt über einen Stripe-Zahlungslink. Ohne Warenkorb. Ohne Abo.</p>
+      </section>
 
-function isValidLink(value) {
-  try {
-    const url = new URL(value);
-    return url.protocol === "https:" &&
-      url.hostname === "buy.stripe.com" &&
-      !url.username && !url.password &&
-      (!url.port || url.port === "443") &&
-      url.pathname.length > 1;
-  } catch { return false; }
-}
+      <div class="section-heading">
+        <h2>Unsere Auswahl</h2>
+        <span class="small">Beispielprodukte · Preise in EUR</span>
+      </div>
 
-function refreshStates() {
-  Object.keys(PAYMENT_LINKS).forEach(key => {
-    const ready = isValidLink(PAYMENT_LINKS[key]);
-    const state = document.getElementById("state-" + key);
-    state.textContent = ready ? "Stripe-Zahlungslink hinterlegt" : "Zahlungslink noch nicht hinterlegt";
-    state.classList.toggle("ready", ready);
-  });
-}
+      <!-- Namen, Preise und Beschreibungen an deine Stripe-Produkte anpassen. -->
+      <section class="products reveal" aria-label="Produktauswahl">
+        <article class="product">
+          <div class="visual">
+            <span class="number">01 /</span>
+            <svg viewBox="0 0 180 180" role="img" aria-label="Coladose">
+              <ellipse cx="90" cy="160" rx="33" ry="6" fill="#25392d15"/>
+              <rect x="61" y="26" width="58" height="128" rx="13" fill="#28553b"/>
+              <path d="M63 38h54M63 144h54" stroke="#f5f0e5" stroke-width="3"/>
+              <ellipse cx="90" cy="29" rx="25" ry="5" fill="#c4cec0"/>
+              <ellipse cx="90" cy="29" rx="8" ry="2" fill="#65766b"/>
+              <text x="90" y="94" text-anchor="middle" fill="#deeca1" font-size="24" font-family="Space Grotesk, sans-serif" font-weight="700" transform="rotate(-90 90 94)">COLA</text>
+              <path d="M107 57v63" stroke="#fff" stroke-opacity=".12" stroke-width="3"/>
+            </svg>
+            <span class="category">Erfrischung</span>
+          </div>
+          <div class="info">
+            <div class="title-row"><h3>Cola</h3><span class="price">2,00 €</span></div>
+            <p class="description">Eine kleine Erfrischung · 330 ml</p>
+            <button class="buy" type="button" data-product="cola" aria-label="Cola über Stripe bezahlen">
+              <span>Jetzt bezahlen</span><span aria-hidden="true">↗</span>
+            </button>
+            <p class="payment-note">Einmalige Zahlung über Stripe</p>
+          </div>
+        </article>
 
-function openSettings(product) {
-  Object.keys(PAYMENT_LINKS).forEach(key => {
-    document.getElementById("link-" + key).value = PAYMENT_LINKS[key];
-  });
-  error.hidden = true;
-  dialog.showModal();
-  if (product) {
-    error.textContent = "Für " + names[product] + " fehlt ein gültiger Zahlungslink. Es wurde keine Zahlung ausgelöst.";
-    error.hidden = false;
-    document.getElementById("link-" + product).focus();
-  }
-}
+        <article class="product">
+          <div class="visual orange">
+            <span class="number">02 /</span>
+            <svg viewBox="0 0 180 180" role="img" aria-label="Chipstüte">
+              <ellipse cx="90" cy="159" rx="42" ry="6" fill="#25392d15"/>
+              <path d="M52 29h76l-5 15 7 99-4 10H54l-4-10 7-99z" fill="#da6438"/>
+              <path d="M53 35h74M53 145h74" stroke="#f5f0e5" stroke-width="3" stroke-dasharray="3 2"/>
+              <path d="M62 49l-5 86m64-86 3 84" stroke="#a74623" stroke-opacity=".35" stroke-width="2"/>
+              <text x="90" y="81" text-anchor="middle" fill="#fff5df" font-size="19" font-family="Space Grotesk, sans-serif" font-weight="700">CHIPS</text>
+              <ellipse cx="82" cy="109" rx="15" ry="10" transform="rotate(-25 82 109)" fill="#f4d37f"/>
+              <ellipse cx="102" cy="116" rx="15" ry="10" transform="rotate(25 102 116)" fill="#ffe9a9"/>
+            </svg>
+            <span class="category">Knusprige Pause</span>
+          </div>
+          <div class="info">
+            <div class="title-row"><h3>Chips</h3><span class="price">1,50 €</span></div>
+            <p class="description">Knusprig & gesalzen · 50 g</p>
+            <button class="buy" type="button" data-product="chips" aria-label="Chips über Stripe bezahlen">
+              <span>Jetzt bezahlen</span><span aria-hidden="true">↗</span>
+            </button>
+            <p class="payment-note">Einmalige Zahlung über Stripe</p>
+          </div>
+        </article>
 
-document.querySelectorAll("[data-buy]").forEach(button => {
-  button.addEventListener("click", () => {
-    const product = button.dataset.buy;
-    const link = PAYMENT_LINKS[product].trim();
-    if (!isValidLink(link)) return openSettings(product);
-    window.location.assign(link);
-  });
-});
+        <article class="product">
+          <div class="visual yellow">
+            <span class="number">03 /</span>
+            <svg viewBox="0 0 180 180" role="img" aria-label="Sandwich">
+              <ellipse cx="90" cy="151" rx="54" ry="7" fill="#25392d15"/>
+              <path d="M36 135 84 44q5-9 11 0l48 91z" fill="#ba8446" stroke="#916036" stroke-width="3" stroke-linejoin="round"/>
+              <path d="M34 127 85 38q5-8 10 0l49 89z" fill="#547340"/>
+              <path d="m36 118 49-82q5-8 10 0l48 82z" fill="#da6438"/>
+              <path d="M37 108 84 27q6-9 12 0l47 81z" fill="#e8bd79" stroke="#bd8b4f" stroke-width="3" stroke-linejoin="round"/>
+              <path d="m51 99 36-62q3-5 6 0l36 62z" fill="#fae5b6"/>
+              <g fill="#d8b97e"><circle cx="88" cy="58" r="2"/><circle cx="77" cy="78" r="2"/><circle cx="103" cy="85" r="2"/><circle cx="90" cy="93" r="2"/></g>
+            </svg>
+            <span class="category">Für zwischendurch</span>
+          </div>
+          <div class="info">
+            <div class="title-row"><h3>Sandwich</h3><span class="price">4,50 €</span></div>
+            <p class="description">Eine herzhafte Pause · 1 Stück</p>
+            <button class="buy" type="button" data-product="sandwich" aria-label="Sandwich über Stripe bezahlen">
+              <span>Jetzt bezahlen</span><span aria-hidden="true">↗</span>
+            </button>
+            <p class="payment-note">Einmalige Zahlung über Stripe</p>
+          </div>
+        </article>
+      </section>
 
-document.getElementById("configure").addEventListener("click", () => openSettings());
-document.getElementById("close-dialog").addEventListener("click", () => dialog.close());
-document.getElementById("reset-links").addEventListener("click", () => {
-  Object.keys(PAYMENT_LINKS).forEach(key => {
-    document.getElementById("link-" + key).value = "";
-  });
-  error.hidden = true;
-});
-document.getElementById("link-form").addEventListener("submit", event => {
-  event.preventDefault();
-  const entries = Object.keys(PAYMENT_LINKS).map(key => [
-    key, document.getElementById("link-" + key).value.trim()
-  ]);
-  const invalid = entries.find(([, value]) => value && !isValidLink(value));
-  if (invalid) {
-    error.textContent = "Bitte für " + names[invalid[0]] + " einen gültigen HTTPS-Link von buy.stripe.com eingeben.";
-    error.hidden = false;
-    document.getElementById("link-" + invalid[0]).focus();
-    return;
-  }
-  entries.forEach(([key, value]) => { PAYMENT_LINKS[key] = value; });
-  refreshStates();
-  dialog.close();
-});
-refreshStates();
-</script>
+      <div class="notice">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <rect x="5" y="10" width="14" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.5"/>
+        </svg>
+        <span>Du bezahlst auf der sicheren Stripe-Seite. Diese Vorlage funktioniert erst mit deinen Zahlungslinks. Preise und Lieferbedingungen müssen mit deinem Angebot in Stripe übereinstimmen.</span>
+      </div>
+
+      <!-- Diesen Betreiber-Hinweis kannst du vor der Veröffentlichung entfernen. -->
+      <section class="setup" aria-labelledby="setup-title">
+        <div>
+          <p class="eyebrow">Einrichtung für Betreiber</p>
+          <h2 id="setup-title">Deinen Kiosk verbinden.</h2>
+          <p>Speichere diese Datei als <code>kiosk.html</code> und lade sie auf deine Website hoch. Für einzelne Zahlungslinks brauchst du keinen Stripe-Geheimschlüssel im Browser.</p>
+        </div>
+        <ol class="steps">
+          <li><div><strong>Payment Links erstellen</strong><br><span>Lege im Stripe-Dashboard für jedes Produkt einen einmaligen Preis an und erstelle dafür einen Payment Link.</span></div></li>
+          <li><div><strong>Links im JavaScript eintragen</strong><br><span>Ersetze die leeren Einträge unter <code>PAYMENT_LINKS</code> am Ende dieser Datei durch deine vollständigen Stripe-Links.</span></div></li>
+          <li><div><strong>Prüfen und veröffentlichen</strong><br><span>Passe die Beispielprodukte und Preise an. Konfiguriere Versand oder Abholung sowie erforderliche rechtliche Angaben. Teste zunächst mit Testlinks, bevor du Live-Links verwendest.</span></div></li>
+        </ol>
+      </section>
+    </main>
+
+    <footer>
+      <span>kiosk✳ — Dein kleiner Online-Laden.</span>
+      <span>Ein Produkt. Ein Zahlungslink.</span>
+    </footer>
+  </div>
+
+  <dialog id="payment-dialog" aria-labelledby="dialog-title">
+    <h2 id="dialog-title">Zahlungslink fehlt</h2>
+    <p id="dialog-message"></p>
+    <button class="close" id="close-dialog" type="button">Verstanden</button>
+  </dialog>
+
+  <script>
+    /*
+     * HIER DEINE STRIPE PAYMENT LINKS EINTRAGEN.
+     *
+     * Beispiel für das URL-Format: https://buy.stripe.com/...
+     * Verwende die tatsächlichen Links aus deinem Stripe-Dashboard.
+     * Niemals geheime Schlüssel wie sk_test_... oder sk_live_... eintragen.
+     */
+    const PAYMENT_LINKS = {
+      cola: "",
+      chips: "",
+      sandwich: ""
+    };
+
+    const PRODUCT_NAMES = {
+      cola: "Cola",
+      chips: "Chips",
+      sandwich: "Sandwich"
+    };
+
+    const dialog = document.getElementById("payment-dialog");
+    const dialogMessage = document.getElementById("dialog-message");
+
+    function validStripeLink(value) {
+      try {
+        const url = new URL(value);
+        return (
+          url.protocol === "https:" &&
+          url.hostname === "buy.stripe.com" &&
+          !url.username &&
+          !url.password &&
+          (!url.port || url.port === "443") &&
+          url.pathname.length > 1
+        );
+      } catch {
+        return false;
+      }
+    }
+
+    document.querySelectorAll("[data-product]").forEach(button => {
+      button.addEventListener("click", () => {
+        const product = button.dataset.product;
+        const link = (PAYMENT_LINKS[product] || "").trim();
+
+        if (!validStripeLink(link)) {
+          dialogMessage.textContent =
+            "Für " + PRODUCT_NAMES[product] +
+            " ist noch kein gültiger Stripe-Zahlungslink hinterlegt. " +
+            "Trage den Link im JavaScript unter PAYMENT_LINKS ein. " +
+            "Es wurde keine Zahlung ausgelöst.";
+          dialog.showModal();
+          return;
+        }
+
+        // Stripe legt Betrag und Zahlungsbedingungen fest.
+        // Diese Weiterleitung allein ist kein Nachweis einer erfolgreichen Zahlung.
+        window.location.assign(link);
+      });
+    });
+
+    document.getElementById("close-dialog").addEventListener("click", () => {
+      dialog.close();
+    });
+  </script>
 </body>
 </html>
